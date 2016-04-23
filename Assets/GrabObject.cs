@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GrabObject : MonoBehaviour {
 
@@ -12,6 +13,25 @@ public class GrabObject : MonoBehaviour {
 	public float smooth;
 	public float jumpForce;
 	public float jumpableRadius = 2.0f;
+
+	/*
+		This is how it works:
+		movement:
+		mouse
+			look around like normal. 
+			left and right causes whole body yaw rotation
+			up and down causes head camera pitch rotation (with clamping)
+
+		w pitch body forward (only when grabbing)
+		s pitch body backward (only when grabbing)
+		a roll body left (only when grabbing)
+		d roll body right (only when grabbing)
+
+		space move 'feet'-ward
+		shift move 'head'-ward
+		q move (strafe) left
+		e move (strafe) right
+	*/
 
 	// Use this for initialization
 	void Start () {
@@ -77,32 +97,69 @@ public class GrabObject : MonoBehaviour {
 	}
 
 	void canJump () {
-		Collider[] objects = Physics.OverlapSphere(transform.position, jumpableRadius);
+		Vector3 jumpDirection;
+		GameObject player = GameObject.FindWithTag ("Player");
+		if (Input.GetKeyDown (KeyCode.Space)) {
+			
+		} else if (Input.GetKeyDown (KeyCode.Q)) {
 
-		if (objects.Length > 1) {
-			//if I'm close to an object that is 'Grabbable' then
-			//   I should be able to move in the direction I'm pointing
-			//if I'm close to a jumpable object then
-			//   
-			Collider bestCollider;
-			Grabable grabable;
-			jumpableObject jumpable;
-			foreach (Collider collider in objects) {
-				grabable = collider.GetComponent<Grabable> ();
-				if (grabable != null) {
-					bestCollider = collider;
-					break;
+		} else if (Input.GetKeyDown (KeyCode.E)) {
+
+		} else if (Input.GetKeyDown (KeyCode.LeftControl)) {
+
+		}
+
+		if (jumpDirection != null) {
+
+		}
+
+		if (Input.GetKeyDown (KeyCode.Space)) {
+			Collider[] objects = Physics.OverlapSphere (transform.position, jumpableRadius);
+
+			if (objects.Length > 1) { 
+				Collider bestCollider;
+				Grabable grabable = null;
+				List<jumpableObject> jumpableObjects = new List<jumpableObject> ();
+				foreach (Collider collider in objects) {
+					//grabable = collider.GetComponent<Grabable> ();
+					if (grabable != null) {
+						bestCollider = collider;
+						break;
+					}
+
+					jumpableObject jumpable = collider.GetComponent<jumpableObject> ();
+					if (jumpable != null) {
+						jumpableObjects.Add (jumpable);
+					}
 				}
 
-				jumpable = collider.GetComponent<jumpableObject> ();
-			}
+				if (grabable != null) {
+					jump ();
+				} else if (jumpableObjects.Count > 0) {
+					List<Vector3> normals = new List<Vector3> ();
+					GameObject playerObject = GameObject.FindWithTag ("Player");
+					Vector3 playerPosition = playerObject.transform.position;
+					foreach (jumpableObject jo in jumpableObjects) {
+						normals.AddRange (jo.getNormals(playerPosition));
+					}
 
-			if (grabable != null) {
-				jump ();
-			} else if (jumpable != null){
+					var normal = normals [0];
 
+				}
 			}
 		}
+	}
+
+	List<jumpableObject> getJumpableObjectAtPoint (Vector3 point) {
+		List<jumpableObject> result = new List<jumpableObject> ();
+		Collider[] objects = Physics.OverlapSphere (transform.position, jumpableRadius);
+		foreach (Collider collider in objects) {
+			jumpableObject jumpable = collider.GetComponent<jumpableObject> ();
+			if (jumpable != null) {
+				result.Add (jumpable);
+			}
+		}
+		return result;
 	}
 
 	void jump () {

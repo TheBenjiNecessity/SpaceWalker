@@ -3,15 +3,14 @@
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/GrabObject.cs">
     <Files>
       <File FileName="Assets/PlayerBehaviour.cs" Line="1" Column="1" />
-      <File FileName="Assets/MyFPSBehaviour.cs" Line="1" Column="1" />
       <File FileName="Assets/MyMouseLook.cs" Line="1" Column="1" />
-      <File FileName="Assets/GrabObject.cs" Line="95" Column="6" />
+      <File FileName="Assets/GrabObject.cs" Line="111" Column="3" />
       <File FileName="Assets/PickupObject.cs" Line="1" Column="1" />
       <File FileName="Assets/GameBehaviour.cs" Line="1" Column="1" />
       <File FileName="Assets/FindJumpableSurface.cs" Line="1" Column="1" />
       <File FileName="Assets/PlayerMovement.cs" Line="1" Column="1" />
-      <File FileName="Assets/Standard Assets/Characters/FirstPersonCharacter/Scripts/MouseLook.cs" Line="1" Column="1" />
-      <File FileName="Assets/Standard Assets/Characters/FirstPersonCharacter/Scripts/FirstPersonController.cs" Line="1" Column="1" />
+      <File FileName="Assets/MyFPSBehaviour.cs" Line="1" Column="1" />
+      <File FileName="Assets/jumpableObject.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
