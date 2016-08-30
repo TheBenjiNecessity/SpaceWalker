@@ -12,6 +12,8 @@ public class MyMouseLook : MonoBehaviour
 	public bool clampVerticalRotation = true;
 	public float MinimumX = -90F;
 	public float MaximumX = 90F;
+	public float MinimumY = -60F;
+	public float MaximumY = 60F;
 
 	private Quaternion m_CharacterTargetRot;
 	private Quaternion m_CameraTargetRot;
@@ -24,14 +26,16 @@ public class MyMouseLook : MonoBehaviour
 
 	public void HandleRotation(Transform character, Transform camera)
 	{
-		float yRot = CrossPlatformInputManager.GetAxis("Mouse X") * XSensitivity;
-		float xRot = CrossPlatformInputManager.GetAxis("Mouse Y") * YSensitivity;
+		float xRot = CrossPlatformInputManager.GetAxis("Mouse X") * XSensitivity;
+		float yRot = CrossPlatformInputManager.GetAxis("Mouse Y") * YSensitivity;
 
-		m_CharacterTargetRot *= Quaternion.Euler (0f, yRot, 0f);
-		m_CameraTargetRot *= Quaternion.Euler (-xRot, 0f, 0f);
+		m_CharacterTargetRot *= Quaternion.Euler (0f, xRot, 0f);
+		m_CameraTargetRot *= Quaternion.Euler (-yRot, 0f, 0f);
 
 		if(clampVerticalRotation)
 			m_CameraTargetRot = ClampRotationAroundXAxis (m_CameraTargetRot);
+
+		m_CharacterTargetRot = ClampRotationAroundYAxis (m_CharacterTargetRot);
 
 		if(smooth)
 		{
@@ -46,7 +50,7 @@ public class MyMouseLook : MonoBehaviour
 			camera.localRotation = m_CameraTargetRot;
 		}
 
-		RotateBody (character);
+		//RotateBody (character);
 	}
 
 	Quaternion ClampRotationAroundXAxis(Quaternion q)
@@ -65,61 +69,77 @@ public class MyMouseLook : MonoBehaviour
 		return q;
 	}
 
-	private void RotateBody(Transform character)
+	Quaternion ClampRotationAroundYAxis(Quaternion q)
 	{
-		if (Input.GetKey (KeyCode.A)) {
-			RollLeft (character);
-		} else if (Input.GetKey (KeyCode.D)) {
-			RollRight (character);
-		}
+		q.x /= q.w;
+		q.y /= q.w;
+		q.z /= q.w;
+		q.w = 1.0f;
 
-		if (Input.GetKey (KeyCode.W)) {
-			PitchForward (character);
-		} else if (Input.GetKey (KeyCode.S)) {
-			PitchBack (character);
-		}
+		float angleY = 2.0f * Mathf.Rad2Deg * Mathf.Atan (q.y);
+
+		angleY = Mathf.Clamp (angleY, MinimumY, MaximumY);
+
+		q.y = Mathf.Tan (0.5f * Mathf.Deg2Rad * angleY);
+
+		return q;
 	}
 
-	public void RollLeft(Transform character) {
-		Roll (rollSpeed, character);
-	}
+//	private void RotateBody(Transform character)
+//	{
+//		if (Input.GetKey (KeyCode.A)) {
+//			RollLeft (character);
+//		} else if (Input.GetKey (KeyCode.D)) {
+//			RollRight (character);
+//		}
+//
+//		if (Input.GetKey (KeyCode.W)) {
+//			PitchForward (character);
+//		} else if (Input.GetKey (KeyCode.S)) {
+//			PitchBack (character);
+//		}
+//	}
 
-	public void RollRight(Transform character) {
-		Roll (-rollSpeed, character);
-	}
+//	public void RollLeft(Transform character) {
+//		Roll (rollSpeed, character);
+//	}
+//
+//	public void RollRight(Transform character) {
+//		Roll (-rollSpeed, character);
+//	}
+//
+//	public void PitchForward(Transform character) {
+//		Pitch (rollSpeed, character);
+//	}
+//
+//	public void PitchBack(Transform character) {
+//		Pitch (-rollSpeed, character);
+//	}
 
-	public void PitchForward(Transform character) {
-		Pitch (rollSpeed, character);
-	}
-
-	public void PitchBack(Transform character) {
-		Pitch (-rollSpeed, character);
-	}
-
-	private void Roll(float roll, Transform character) {
-		m_CharacterTargetRot *= Quaternion.Euler (0f, 0f, roll);
-		if(smooth)
-		{
-			character.localRotation = Quaternion.Slerp (character.localRotation, m_CharacterTargetRot,
-				smoothTime * Time.deltaTime);
-		}
-		else
-		{
-			character.localRotation = m_CharacterTargetRot;
-		}
-	}
-
-	private void Pitch(float pitch, Transform character) {
-		m_CharacterTargetRot *= Quaternion.Euler (pitch, 0f, 0f);
-		if(smooth)
-		{
-			character.localRotation = Quaternion.Slerp (character.localRotation, m_CharacterTargetRot,
-				smoothTime * Time.deltaTime);
-		}
-		else
-		{
-			character.localRotation = m_CharacterTargetRot;
-		}
-	}
+//	private void Roll(float roll, Transform character) {
+//		m_CharacterTargetRot *= Quaternion.Euler (0f, 0f, roll);
+//		if(smooth)
+//		{
+//			character.localRotation = Quaternion.Slerp (character.localRotation, m_CharacterTargetRot,
+//				smoothTime * Time.deltaTime);
+//		}
+//		else
+//		{
+//			character.localRotation = m_CharacterTargetRot;
+//		}
+//	}
+//
+//	private void Pitch(float pitch, Transform character) {
+//		m_CharacterTargetRot *= Quaternion.Euler (pitch, 0f, 0f);
+//		if(smooth)
+//		{
+//			character.localRotation = Quaternion.Slerp (character.localRotation, m_CharacterTargetRot,
+//				smoothTime * Time.deltaTime);
+//		}
+//		else
+//		{
+//			character.localRotation = m_CharacterTargetRot;
+//		}
+//	}
 }
 

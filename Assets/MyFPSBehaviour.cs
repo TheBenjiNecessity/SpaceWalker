@@ -5,6 +5,7 @@ using UnityStandardAssets.Characters.FirstPerson;
 public class MyFPSBehaviour : MonoBehaviour {
 
 	private Camera m_Camera;
+	private GameObject m_Head;
 	private float m_YRotation;
 	private float m_XRotation;
 	private Vector2 m_Input;
@@ -15,12 +16,13 @@ public class MyFPSBehaviour : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		m_Camera = GameObject.FindWithTag ("FPSCamera").GetComponent<Camera> ();
+		m_Head = GameObject.FindWithTag ("Head");
 		m_MouseLook = new MyMouseLook ();
-		m_MouseLook.Init(transform, m_Camera.transform);
+		m_MouseLook.Init(m_Head.transform, m_Camera.transform);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		m_MouseLook.HandleRotation (transform, m_Camera.transform);
+		m_MouseLook.HandleRotation (m_Head.transform, m_Camera.transform);
 	}
 }

@@ -9,6 +9,8 @@ public class PickupObject : MonoBehaviour {
 	GameObject carriedObject;
 	GameObject grabber;
 
+	Quaternion rotationOffset;
+
 	public float distance;
 	public float smooth;
 	public float shootForce;
@@ -38,14 +40,12 @@ public class PickupObject : MonoBehaviour {
 	}
 
 	void carry(GameObject go) {
-		//!! What if the object that I'm carrying gets tethered to an object parented to the player?
-
-
-		//previousPosition = go.transform.position;
 		go.transform.position = Vector3.Lerp(go.transform.position, 
 			grabber.transform.position, 
 			Time.deltaTime * smooth);
-//
+
+		go.transform.rotation = Quaternion.Lerp (go.transform.rotation, grabber.transform.rotation * rotationOffset, Time.deltaTime * smooth);
+
 		Rigidbody rigidBody = go.GetComponent<Rigidbody> ();
 
 		rigidBody.velocity = Vector3.zero;
@@ -66,19 +66,8 @@ public class PickupObject : MonoBehaviour {
 					carrying = true;
 					carriedObject = p.gameObject;
 
-//					Rigidbody rigidBody = p.gameObject.GetComponent<Rigidbody> ();
-//					rigidBody.useGravity = false;
-//
-//					rigidBody.velocity = Vector3.zero;
-//					rigidBody.angularVelocity = Vector3.zero;
+					rotationOffset = carriedObject.transform.rotation * Quaternion.Inverse (grabber.transform.rotation);
 
-
-					//carriedObject.transform.parent = grabber.transform;
-
-					//FixedJoint joint = grabber.GetComponent<FixedJoint> ();
-
-					//joint.connectedBody = carriedObject.GetComponent<Rigidbody> ();
-					//p.gameObject.transform.parent = mainCamera.transform;
 				}
 			}
 		}
@@ -108,6 +97,7 @@ public class PickupObject : MonoBehaviour {
 			carriedObject.transform.parent = null;
 			carriedObject = null;
 			previousPosition = Vector3.zero;
+			rotationOffset = Quaternion.identity;
 		}
 	}
 }

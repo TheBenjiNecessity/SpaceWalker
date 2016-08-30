@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class jumpableObject : MonoBehaviour {
 
+	public Vector3[] jumpNormals;
+
 	// Use this for initialization
 	void Start () {
 	
