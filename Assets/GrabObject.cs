@@ -16,166 +16,166 @@ public class KeyCombination {
 	public List<KeyCode> keysDown;
 	public List<Movement> movements;
 
-	#region statics
-	private static List<KeyCode> QEZC = new List<KeyCode>(){KeyCode.Q, KeyCode.E, KeyCode.Z, KeyCode.C};
-
-	private static List<KeyCode> QEZ = new List<KeyCode>(){KeyCode.Q, KeyCode.E, KeyCode.Z};
-	private static List<KeyCode> QEC = new List<KeyCode>(){KeyCode.Q, KeyCode.E, KeyCode.C};
-	private static List<KeyCode> QZC = new List<KeyCode>(){KeyCode.Q, KeyCode.Z, KeyCode.C};
-	private static List<KeyCode> QE = new List<KeyCode>(){KeyCode.Q, KeyCode.E};
-	private static List<KeyCode> QZ = new List<KeyCode>(){KeyCode.Q, KeyCode.Z};
-	private static List<KeyCode> QC = new List<KeyCode>(){KeyCode.Q, KeyCode.C};
-	private static List<KeyCode> Q = new List<KeyCode>(){KeyCode.Q};
-
-	private static List<KeyCode> EZC = new List<KeyCode>(){KeyCode.E, KeyCode.Z, KeyCode.C};
-	private static List<KeyCode> EZ = new List<KeyCode>(){KeyCode.E, KeyCode.Z};
-	private static List<KeyCode> EC = new List<KeyCode>(){KeyCode.E, KeyCode.C};
-	private static List<KeyCode> E = new List<KeyCode>(){KeyCode.E};
-
-	private static List<KeyCode> ZC = new List<KeyCode>(){KeyCode.Z, KeyCode.C};
-	private static List<KeyCode> Z = new List<KeyCode>(){KeyCode.Z};
-
-	private static List<KeyCode> C = new List<KeyCode>(){KeyCode.C};
-
-	private static List<Movement> thrustUp = new List<Movement>(){new Movement(Movement.vectorType.THRUST, Movement.vectorDirection.UP)};
-	private static List<Movement> thrustDown = new List<Movement>(){new Movement(Movement.vectorType.THRUST, Movement.vectorDirection.DOWN)};
-	private static List<Movement> thrustLeft = new List<Movement>(){new Movement(Movement.vectorType.THRUST, Movement.vectorDirection.UP)};
-	private static List<Movement> thrustRight = new List<Movement>(){new Movement(Movement.vectorType.THRUST, Movement.vectorDirection.DOWN)};
-	private static List<Movement> thrustForward = new List<Movement>(){new Movement(Movement.vectorType.THRUST, Movement.vectorDirection.UP)};
-	private static List<Movement> thrustBack = new List<Movement>(){new Movement(Movement.vectorType.THRUST, Movement.vectorDirection.DOWN)};
-
-	private static List<Movement> torqueForward = new List<Movement>(){new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.FORWARD)};
-	private static List<Movement> torqueBack = new List<Movement>(){new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.BACK)};
-	private static List<Movement> torqueLeft = new List<Movement>(){new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.LEFT)};
-	private static List<Movement> torqueRight = new List<Movement>(){new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.RIGHT)};
-	private static List<Movement> torqueUp = new List<Movement>(){new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.LEFT)};
-	private static List<Movement> torqueDown = new List<Movement>(){new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.RIGHT)};
-
-	public static List<KeyCombination> possibleForwardCombinations = new List<KeyCombination>(){
-		new KeyCombination(GrabObject.pointForward, QEZC, thrustForward),
-		new KeyCombination(GrabObject.pointForward, QEZ, thrustForward),
-		new KeyCombination(GrabObject.pointForward, QEC, thrustForward),
-		new KeyCombination(GrabObject.pointForward, QZC, thrustForward),
-		new KeyCombination(GrabObject.pointForward, QE, torqueRight),
-		new KeyCombination(GrabObject.pointForward, QZ, torqueUp),
-		new KeyCombination(GrabObject.pointForward, QC, thrustForward),
-		new KeyCombination(GrabObject.pointForward, Q, new List<Movement>(){new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.RIGHT),
-																			new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.UP)}),
-		new KeyCombination(GrabObject.pointForward, EZC, thrustForward),
-		new KeyCombination(GrabObject.pointForward, EZ, thrustForward),
-		new KeyCombination(GrabObject.pointForward, EC, torqueDown),
-		new KeyCombination(GrabObject.pointForward, E, new List<Movement>(){new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.RIGHT),
-																			new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.DOWN)}),
-		new KeyCombination(GrabObject.pointForward, ZC, torqueLeft),
-		new KeyCombination(GrabObject.pointForward, Z, new List<Movement>(){new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.LEFT),
-																			new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.UP)}),
-		new KeyCombination(GrabObject.pointForward, C, new List<Movement>(){new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.LEFT),
-																			new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.DOWN)})
-	};
-
-	public static List<KeyCombination> possibleBackCombinations = new List<KeyCombination>(){
-		new KeyCombination(GrabObject.pointBack, QEZC, thrustBack),
-		new KeyCombination(GrabObject.pointBack, QEZ, thrustBack),
-		new KeyCombination(GrabObject.pointBack, QEC, thrustBack),
-		new KeyCombination(GrabObject.pointBack, QZC, thrustBack),
-		new KeyCombination(GrabObject.pointBack, QE, torqueLeft),
-		new KeyCombination(GrabObject.pointBack, QZ, torqueDown),
-		new KeyCombination(GrabObject.pointBack, QC, thrustBack),
-		new KeyCombination(GrabObject.pointBack, Q, new List<Movement>(){new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.LEFT),
-																		 new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.DOWN)}),
-		new KeyCombination(GrabObject.pointBack, EZC, thrustBack),
-		new KeyCombination(GrabObject.pointBack, EZ, thrustBack),
-		new KeyCombination(GrabObject.pointBack, EC, torqueUp),
-		new KeyCombination(GrabObject.pointBack, E, new List<Movement>(){new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.LEFT),
-																		 new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.UP)}),
-		new KeyCombination(GrabObject.pointBack, ZC, torqueRight),
-		new KeyCombination(GrabObject.pointBack, Z, new List<Movement>(){new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.RIGHT),
-																		 new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.DOWN)}),
-		new KeyCombination(GrabObject.pointBack, C, new List<Movement>(){new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.RIGHT),
-																		 new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.UP)})
-	};
-
-	public static List<KeyCombination> possibleLeftCombinations = new List<KeyCombination>(){
-		new KeyCombination(GrabObject.pointLeft, QEZC, thrustLeft),
-		new KeyCombination(GrabObject.pointLeft, QEZ, torqueForward),
-		new KeyCombination(GrabObject.pointLeft, QEC, thrustLeft),
-		new KeyCombination(GrabObject.pointLeft, QZC, torqueBack),
-		new KeyCombination(GrabObject.pointLeft, QE, torqueForward),
-		new KeyCombination(GrabObject.pointLeft, QZ, null),
-		new KeyCombination(GrabObject.pointLeft, QC, torqueBack),
-		new KeyCombination(GrabObject.pointLeft, Q, null),
-		new KeyCombination(GrabObject.pointLeft, EZC, thrustLeft),
-		new KeyCombination(GrabObject.pointLeft, EZ, torqueForward),
-		new KeyCombination(GrabObject.pointLeft, EC, thrustLeft),
-		new KeyCombination(GrabObject.pointLeft, E, torqueForward),
-		new KeyCombination(GrabObject.pointLeft, ZC, torqueBack),
-		new KeyCombination(GrabObject.pointLeft, Z, null),
-		new KeyCombination(GrabObject.pointLeft, C, torqueBack)
-	};
-
-	public static List<KeyCombination> possibleRightCombinations = new List<KeyCombination>(){
-		new KeyCombination(GrabObject.pointRight, QEZC, thrustRight),
-		new KeyCombination(GrabObject.pointRight, QEZ, thrustRight),
-		new KeyCombination(GrabObject.pointRight, QEC, torqueBack),
-		new KeyCombination(GrabObject.pointRight, QZC, thrustRight),
-		new KeyCombination(GrabObject.pointRight, QE, torqueBack),
-		new KeyCombination(GrabObject.pointRight, QZ, thrustRight),
-		new KeyCombination(GrabObject.pointRight, QC, torqueBack),
-		new KeyCombination(GrabObject.pointRight, Q, torqueBack),
-		new KeyCombination(GrabObject.pointRight, EZC, torqueForward),
-		new KeyCombination(GrabObject.pointRight, EZ, torqueForward),
-		new KeyCombination(GrabObject.pointRight, EC, null),
-		new KeyCombination(GrabObject.pointRight, E, null),
-		new KeyCombination(GrabObject.pointRight, ZC, torqueForward),
-		new KeyCombination(GrabObject.pointRight, Z, torqueForward),
-		new KeyCombination(GrabObject.pointRight, C, null)
-	};
-
-	public static List<KeyCombination> possibleUpCombinations = new List<KeyCombination>(){
-		new KeyCombination(GrabObject.pointUp, QEZC, thrustUp),
-		new KeyCombination(GrabObject.pointUp, QEZ, torqueBack),
-		new KeyCombination(GrabObject.pointUp, QEC, torqueForward),
-		new KeyCombination(GrabObject.pointUp, QZC, thrustUp),
-		new KeyCombination(GrabObject.pointUp, QE, null),
-		new KeyCombination(GrabObject.pointUp, QZ, torqueBack),
-		new KeyCombination(GrabObject.pointUp, QC, torqueForward),
-		new KeyCombination(GrabObject.pointUp, Q, null),
-		new KeyCombination(GrabObject.pointUp, EZC, thrustUp),
-		new KeyCombination(GrabObject.pointUp, EZ, torqueBack),
-		new KeyCombination(GrabObject.pointUp, EC, torqueForward),
-		new KeyCombination(GrabObject.pointUp, E, null),
-		new KeyCombination(GrabObject.pointUp, ZC, thrustUp),
-		new KeyCombination(GrabObject.pointUp, Z, torqueBack),
-		new KeyCombination(GrabObject.pointUp, C, torqueForward)
-	};
-
-	public static List<KeyCombination> possibleDownCombinations = new List<KeyCombination>(){
-		new KeyCombination(GrabObject.pointDown, QEZC, thrustDown),
-		new KeyCombination(GrabObject.pointDown, QEZ, thrustDown),
-		new KeyCombination(GrabObject.pointDown, QEC, thrustDown),
-		new KeyCombination(GrabObject.pointDown, QZC,torqueForward),
-		new KeyCombination(GrabObject.pointDown, QE, thrustDown),
-		new KeyCombination(GrabObject.pointDown, QZ, torqueForward),
-		new KeyCombination(GrabObject.pointDown, QC, torqueForward),
-		new KeyCombination(GrabObject.pointDown, Q, torqueForward),
-		new KeyCombination(GrabObject.pointDown, EZC, torqueBack),
-		new KeyCombination(GrabObject.pointDown, EZ, torqueBack),
-		new KeyCombination(GrabObject.pointDown, EC, torqueBack),
-		new KeyCombination(GrabObject.pointDown, E, torqueBack),
-		new KeyCombination(GrabObject.pointDown, ZC, null),
-		new KeyCombination(GrabObject.pointDown, Z, null),
-		new KeyCombination(GrabObject.pointDown, C, null)
-	};
-
-	public static Dictionary<KeyCode, List<KeyCombination>> possibleCombinations = new Dictionary<KeyCode, List<KeyCombination>>(){
-		{KeyCode.W, possibleForwardCombinations},
-		{KeyCode.S, possibleBackCombinations},
-		{KeyCode.A, possibleLeftCombinations},
-		{KeyCode.D, possibleRightCombinations},
-		{KeyCode.Space, possibleUpCombinations},
-		{KeyCode.LeftShift, possibleDownCombinations}
-	};
-	#endregion
+//	#region statics
+//	private static List<KeyCode> QEZC = new List<KeyCode>(){KeyCode.Q, KeyCode.E, KeyCode.Z, KeyCode.C};
+//
+//	private static List<KeyCode> QEZ = new List<KeyCode>(){KeyCode.Q, KeyCode.E, KeyCode.Z};
+//	private static List<KeyCode> QEC = new List<KeyCode>(){KeyCode.Q, KeyCode.E, KeyCode.C};
+//	private static List<KeyCode> QZC = new List<KeyCode>(){KeyCode.Q, KeyCode.Z, KeyCode.C};
+//	private static List<KeyCode> QE = new List<KeyCode>(){KeyCode.Q, KeyCode.E};
+//	private static List<KeyCode> QZ = new List<KeyCode>(){KeyCode.Q, KeyCode.Z};
+//	private static List<KeyCode> QC = new List<KeyCode>(){KeyCode.Q, KeyCode.C};
+//	private static List<KeyCode> Q = new List<KeyCode>(){KeyCode.Q};
+//
+//	private static List<KeyCode> EZC = new List<KeyCode>(){KeyCode.E, KeyCode.Z, KeyCode.C};
+//	private static List<KeyCode> EZ = new List<KeyCode>(){KeyCode.E, KeyCode.Z};
+//	private static List<KeyCode> EC = new List<KeyCode>(){KeyCode.E, KeyCode.C};
+//	private static List<KeyCode> E = new List<KeyCode>(){KeyCode.E};
+//
+//	private static List<KeyCode> ZC = new List<KeyCode>(){KeyCode.Z, KeyCode.C};
+//	private static List<KeyCode> Z = new List<KeyCode>(){KeyCode.Z};
+//
+//	private static List<KeyCode> C = new List<KeyCode>(){KeyCode.C};
+//
+//	private static List<Movement> thrustUp = new List<Movement>(){new Movement(Movement.vectorType.THRUST, Movement.vectorDirection.UP)};
+//	private static List<Movement> thrustDown = new List<Movement>(){new Movement(Movement.vectorType.THRUST, Movement.vectorDirection.DOWN)};
+//	private static List<Movement> thrustLeft = new List<Movement>(){new Movement(Movement.vectorType.THRUST, Movement.vectorDirection.UP)};
+//	private static List<Movement> thrustRight = new List<Movement>(){new Movement(Movement.vectorType.THRUST, Movement.vectorDirection.DOWN)};
+//	private static List<Movement> thrustForward = new List<Movement>(){new Movement(Movement.vectorType.THRUST, Movement.vectorDirection.UP)};
+//	private static List<Movement> thrustBack = new List<Movement>(){new Movement(Movement.vectorType.THRUST, Movement.vectorDirection.DOWN)};
+//
+//	private static List<Movement> torqueForward = new List<Movement>(){new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.FORWARD)};
+//	private static List<Movement> torqueBack = new List<Movement>(){new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.BACK)};
+//	private static List<Movement> torqueLeft = new List<Movement>(){new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.LEFT)};
+//	private static List<Movement> torqueRight = new List<Movement>(){new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.RIGHT)};
+//	private static List<Movement> torqueUp = new List<Movement>(){new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.LEFT)};
+//	private static List<Movement> torqueDown = new List<Movement>(){new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.RIGHT)};
+//
+//	public static List<KeyCombination> possibleForwardCombinations = new List<KeyCombination>(){
+//		new KeyCombination(GrabObject.pointForward, QEZC, thrustForward),
+//		new KeyCombination(GrabObject.pointForward, QEZ, thrustForward),
+//		new KeyCombination(GrabObject.pointForward, QEC, thrustForward),
+//		new KeyCombination(GrabObject.pointForward, QZC, thrustForward),
+//		new KeyCombination(GrabObject.pointForward, QE, torqueRight),
+//		new KeyCombination(GrabObject.pointForward, QZ, torqueUp),
+//		new KeyCombination(GrabObject.pointForward, QC, thrustForward),
+//		new KeyCombination(GrabObject.pointForward, Q, new List<Movement>(){new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.RIGHT),
+//																			new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.UP)}),
+//		new KeyCombination(GrabObject.pointForward, EZC, thrustForward),
+//		new KeyCombination(GrabObject.pointForward, EZ, thrustForward),
+//		new KeyCombination(GrabObject.pointForward, EC, torqueDown),
+//		new KeyCombination(GrabObject.pointForward, E, new List<Movement>(){new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.RIGHT),
+//																			new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.DOWN)}),
+//		new KeyCombination(GrabObject.pointForward, ZC, torqueLeft),
+//		new KeyCombination(GrabObject.pointForward, Z, new List<Movement>(){new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.LEFT),
+//																			new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.UP)}),
+//		new KeyCombination(GrabObject.pointForward, C, new List<Movement>(){new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.LEFT),
+//																			new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.DOWN)})
+//	};
+//
+//	public static List<KeyCombination> possibleBackCombinations = new List<KeyCombination>(){
+//		new KeyCombination(GrabObject.pointBack, QEZC, thrustBack),
+//		new KeyCombination(GrabObject.pointBack, QEZ, thrustBack),
+//		new KeyCombination(GrabObject.pointBack, QEC, thrustBack),
+//		new KeyCombination(GrabObject.pointBack, QZC, thrustBack),
+//		new KeyCombination(GrabObject.pointBack, QE, torqueLeft),
+//		new KeyCombination(GrabObject.pointBack, QZ, torqueDown),
+//		new KeyCombination(GrabObject.pointBack, QC, thrustBack),
+//		new KeyCombination(GrabObject.pointBack, Q, new List<Movement>(){new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.LEFT),
+//																		 new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.DOWN)}),
+//		new KeyCombination(GrabObject.pointBack, EZC, thrustBack),
+//		new KeyCombination(GrabObject.pointBack, EZ, thrustBack),
+//		new KeyCombination(GrabObject.pointBack, EC, torqueUp),
+//		new KeyCombination(GrabObject.pointBack, E, new List<Movement>(){new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.LEFT),
+//																		 new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.UP)}),
+//		new KeyCombination(GrabObject.pointBack, ZC, torqueRight),
+//		new KeyCombination(GrabObject.pointBack, Z, new List<Movement>(){new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.RIGHT),
+//																		 new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.DOWN)}),
+//		new KeyCombination(GrabObject.pointBack, C, new List<Movement>(){new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.RIGHT),
+//																		 new Movement(Movement.vectorType.TORQUE, Movement.vectorDirection.UP)})
+//	};
+//
+//	public static List<KeyCombination> possibleLeftCombinations = new List<KeyCombination>(){
+//		new KeyCombination(GrabObject.pointLeft, QEZC, thrustLeft),
+//		new KeyCombination(GrabObject.pointLeft, QEZ, torqueForward),
+//		new KeyCombination(GrabObject.pointLeft, QEC, thrustLeft),
+//		new KeyCombination(GrabObject.pointLeft, QZC, torqueBack),
+//		new KeyCombination(GrabObject.pointLeft, QE, torqueForward),
+//		new KeyCombination(GrabObject.pointLeft, QZ, null),
+//		new KeyCombination(GrabObject.pointLeft, QC, torqueBack),
+//		new KeyCombination(GrabObject.pointLeft, Q, null),
+//		new KeyCombination(GrabObject.pointLeft, EZC, thrustLeft),
+//		new KeyCombination(GrabObject.pointLeft, EZ, torqueForward),
+//		new KeyCombination(GrabObject.pointLeft, EC, thrustLeft),
+//		new KeyCombination(GrabObject.pointLeft, E, torqueForward),
+//		new KeyCombination(GrabObject.pointLeft, ZC, torqueBack),
+//		new KeyCombination(GrabObject.pointLeft, Z, null),
+//		new KeyCombination(GrabObject.pointLeft, C, torqueBack)
+//	};
+//
+//	public static List<KeyCombination> possibleRightCombinations = new List<KeyCombination>(){
+//		new KeyCombination(GrabObject.pointRight, QEZC, thrustRight),
+//		new KeyCombination(GrabObject.pointRight, QEZ, thrustRight),
+//		new KeyCombination(GrabObject.pointRight, QEC, torqueBack),
+//		new KeyCombination(GrabObject.pointRight, QZC, thrustRight),
+//		new KeyCombination(GrabObject.pointRight, QE, torqueBack),
+//		new KeyCombination(GrabObject.pointRight, QZ, thrustRight),
+//		new KeyCombination(GrabObject.pointRight, QC, torqueBack),
+//		new KeyCombination(GrabObject.pointRight, Q, torqueBack),
+//		new KeyCombination(GrabObject.pointRight, EZC, torqueForward),
+//		new KeyCombination(GrabObject.pointRight, EZ, torqueForward),
+//		new KeyCombination(GrabObject.pointRight, EC, null),
+//		new KeyCombination(GrabObject.pointRight, E, null),
+//		new KeyCombination(GrabObject.pointRight, ZC, torqueForward),
+//		new KeyCombination(GrabObject.pointRight, Z, torqueForward),
+//		new KeyCombination(GrabObject.pointRight, C, null)
+//	};
+//
+//	public static List<KeyCombination> possibleUpCombinations = new List<KeyCombination>(){
+//		new KeyCombination(GrabObject.pointUp, QEZC, thrustUp),
+//		new KeyCombination(GrabObject.pointUp, QEZ, torqueBack),
+//		new KeyCombination(GrabObject.pointUp, QEC, torqueForward),
+//		new KeyCombination(GrabObject.pointUp, QZC, thrustUp),
+//		new KeyCombination(GrabObject.pointUp, QE, null),
+//		new KeyCombination(GrabObject.pointUp, QZ, torqueBack),
+//		new KeyCombination(GrabObject.pointUp, QC, torqueForward),
+//		new KeyCombination(GrabObject.pointUp, Q, null),
+//		new KeyCombination(GrabObject.pointUp, EZC, thrustUp),
+//		new KeyCombination(GrabObject.pointUp, EZ, torqueBack),
+//		new KeyCombination(GrabObject.pointUp, EC, torqueForward),
+//		new KeyCombination(GrabObject.pointUp, E, null),
+//		new KeyCombination(GrabObject.pointUp, ZC, thrustUp),
+//		new KeyCombination(GrabObject.pointUp, Z, torqueBack),
+//		new KeyCombination(GrabObject.pointUp, C, torqueForward)
+//	};
+//
+//	public static List<KeyCombination> possibleDownCombinations = new List<KeyCombination>(){
+//		new KeyCombination(GrabObject.pointDown, QEZC, thrustDown),
+//		new KeyCombination(GrabObject.pointDown, QEZ, thrustDown),
+//		new KeyCombination(GrabObject.pointDown, QEC, thrustDown),
+//		new KeyCombination(GrabObject.pointDown, QZC,torqueForward),
+//		new KeyCombination(GrabObject.pointDown, QE, thrustDown),
+//		new KeyCombination(GrabObject.pointDown, QZ, torqueForward),
+//		new KeyCombination(GrabObject.pointDown, QC, torqueForward),
+//		new KeyCombination(GrabObject.pointDown, Q, torqueForward),
+//		new KeyCombination(GrabObject.pointDown, EZC, torqueBack),
+//		new KeyCombination(GrabObject.pointDown, EZ, torqueBack),
+//		new KeyCombination(GrabObject.pointDown, EC, torqueBack),
+//		new KeyCombination(GrabObject.pointDown, E, torqueBack),
+//		new KeyCombination(GrabObject.pointDown, ZC, null),
+//		new KeyCombination(GrabObject.pointDown, Z, null),
+//		new KeyCombination(GrabObject.pointDown, C, null)
+//	};
+//
+//	public static Dictionary<KeyCode, List<KeyCombination>> possibleCombinations = new Dictionary<KeyCode, List<KeyCombination>>(){
+//		{KeyCode.W, possibleForwardCombinations},
+//		{KeyCode.S, possibleBackCombinations},
+//		{KeyCode.A, possibleLeftCombinations},
+//		{KeyCode.D, possibleRightCombinations},
+//		{KeyCode.Space, possibleUpCombinations},
+//		{KeyCode.LeftShift, possibleDownCombinations}
+//	};
+//	#endregion
 
 	public KeyCombination (KeyCode key, List<KeyCode> keysDown, List<Movement> movements) {
 		this.key = key;
@@ -189,30 +189,87 @@ public class KeyCombination {
 }
 
 public class Movement {
-	public enum vectorType {THRUST, TORQUE, NONE};
-	public enum vectorDirection {FORWARD, BACK, LEFT, RIGHT, UP, DOWN};
+	public enum limb {LEFTHAND, RIGHTHAND, LEFTFOOT, RIGHTFOOT, NONE};
+	public enum direction {FORWARD, BACK, LEFT, RIGHT, UP, DOWN, NONE};
 
-	public vectorType type;
-	public vectorDirection direction;
+	public limb movementLimb;
+	public direction movementDirection;
 
-	public Movement (vectorType type, vectorDirection direction) {
-		this.type = type;
-		this.direction = direction;
+	public static Dictionary<KeyCode, Dictionary<KeyCode, Movement>> movements = new Dictionary<KeyCode, Dictionary<KeyCode, Movement>>(){
+		{
+			KeyCode.W, new Dictionary<KeyCode, Movement>(){
+				{KeyCode.Q, new Movement(KeyCode.W, KeyCode.Q)},
+				{KeyCode.E, new Movement(KeyCode.W, KeyCode.E)},
+				{KeyCode.Z, new Movement(KeyCode.W, KeyCode.Z)},
+				{KeyCode.C, new Movement(KeyCode.W, KeyCode.C)}
+			}
+		},
+		{
+			KeyCode.A, new Dictionary<KeyCode, Movement>(){
+				{KeyCode.Q, null},
+				{KeyCode.E, new Movement(KeyCode.A, KeyCode.E)},
+				{KeyCode.Z, null},
+				{KeyCode.C, new Movement(KeyCode.A, KeyCode.C)}
+			}
+		},
+		{
+			KeyCode.S, new Dictionary<KeyCode, Movement>(){
+				{KeyCode.Q, new Movement(KeyCode.S, KeyCode.Q)},
+				{KeyCode.E, new Movement(KeyCode.S, KeyCode.E)},
+				{KeyCode.Z, new Movement(KeyCode.S, KeyCode.Z)},
+				{KeyCode.C, new Movement(KeyCode.S, KeyCode.C)}
+			}
+		},
+		{
+			KeyCode.Space, new Dictionary<KeyCode, Movement>(){
+				{KeyCode.Q, null},
+				{KeyCode.E, null},
+				{KeyCode.Z, new Movement(KeyCode.Space, KeyCode.Z)},
+				{KeyCode.C, new Movement(KeyCode.Space, KeyCode.C)}
+			}
+		},
+		{
+			KeyCode.LeftShift, new Dictionary<KeyCode, Movement>(){
+				{KeyCode.Q, new Movement(KeyCode.LeftShift, KeyCode.Q)},
+				{KeyCode.E, new Movement(KeyCode.LeftShift, KeyCode.E)},
+				{KeyCode.Z, null},
+				{KeyCode.C, null}
+			}
+		},
+		{
+			KeyCode.D, new Dictionary<KeyCode, Movement>(){
+				{KeyCode.Q, new Movement(KeyCode.D, KeyCode.Q)},
+				{KeyCode.E, null},
+				{KeyCode.Z, new Movement(KeyCode.D, KeyCode.Z)},
+				{KeyCode.C, null}
+			}
+		}
+	};
+
+	public Movement (KeyCode movementDirection, KeyCode movementLimb) {
+		this.movementLimb = translateLimbKeyToLimbEnum(movementLimb);
+		this.movementDirection = translateDirectionKeyToDirectionEnum(movementDirection);
 	}
 
 	public void applyForceToPlayer (GameObject gameObject, List<jumpableObject> jObjectsNearPlayer) {
 		//TODO: there should be a limit to the amount of force added
 		Transform transform = gameObject.transform;
 		Rigidbody body = gameObject.GetComponent<Rigidbody> ();
+		body.isKinematic = false;
+		Vector3 worldVector = translateVectorDirectionToTransformVector (transform);
+		Vector3 worldLimbPosition = getForcePositionForLimb (movementLimb);
+//		Vector3 localLimbPosition = transform.InverseTransformPoint(worldLimbPosition);
+//		Vector3 localVector = transform.InverseTransformDirection(worldVector);
 
-		Vector3 vector = translateVectorDirectionToTransformVector (transform);
 		//if (hasValidJObject (vector, jObjectsNearPlayer)) {
-			body.isKinematic = false;
-			if (type == vectorType.THRUST) {
-				body.AddForce (vector * 10f);
-			} else if (type == vectorType.TORQUE) {
-				body.AddTorque (vector * 10f * Time.deltaTime, ForceMode.VelocityChange);
-			}
+		body.AddForceAtPosition(worldVector * 1f, worldLimbPosition);
+
+//			body.isKinematic = false;
+//			if (type == vectorType.THRUST) {
+//				body.AddForce (vector * 10f);
+//			} else if (type == vectorType.TORQUE) {
+//				body.AddTorque (vector * 10f * Time.deltaTime, ForceMode.VelocityChange);
+//			}
 		//}
 	}
 
@@ -227,23 +284,78 @@ public class Movement {
 		return false;
 	}
 
-	private Vector3 translateVectorDirectionToTransformVector (Transform transform) {
-		switch (direction) {
-			case vectorDirection.FORWARD:
-				return transform.forward;
-			case vectorDirection.BACK:
-				return -transform.forward;
-			case vectorDirection.LEFT:
-				return transform.right;
-			case vectorDirection.RIGHT:
-				return -transform.right;
-			case vectorDirection.UP:
-				return transform.up;
-			case vectorDirection.DOWN:
-				return -transform.up;
+	private Vector3 translateVectorDirectionToTransformVector (Transform localTransform) {
+		switch (movementDirection) {
+			case direction.FORWARD:
+			return localTransform.forward;
+			case direction.BACK:
+			return -localTransform.forward;
+			case direction.LEFT:
+			return -localTransform.right;
+			case direction.RIGHT:
+			return localTransform.right;
+			case direction.UP:
+			return localTransform.up;
+			case direction.DOWN:
+			return -localTransform.up;
 			default:
 			return Vector3.zero;
 		}
+	}
+
+	private limb translateLimbKeyToLimbEnum(KeyCode key) {
+		switch (key) {
+			case KeyCode.Q:
+				return limb.LEFTHAND;
+			case KeyCode.E:
+				return limb.RIGHTHAND;
+			case KeyCode.Z:
+				return limb.LEFTFOOT;
+			case KeyCode.C:
+				return limb.RIGHTFOOT;
+			default:
+				return limb.NONE;
+		};
+	}
+
+	private direction translateDirectionKeyToDirectionEnum(KeyCode key) {
+		switch (key) {
+		case KeyCode.W:
+			return direction.FORWARD;
+		case KeyCode.A:
+			return direction.LEFT;
+		case KeyCode.S:
+			return direction.BACK;
+		case KeyCode.D:
+			return direction.RIGHT;
+		case KeyCode.LeftShift:
+			return direction.DOWN;
+		case KeyCode.Space:
+			return direction.UP;
+		default:
+			return direction.NONE;
+		};
+	}
+
+	private Vector3 getForcePositionForLimb(limb forceLimb) {
+		Vector3 position = Vector3.zero;
+
+		switch (forceLimb) {
+			case limb.LEFTFOOT:
+				position = GameObject.Find ("leftFoot").transform.position;
+				break;
+			case limb.RIGHTFOOT:
+				position = GameObject.Find ("rightFoot").transform.position;
+				break;
+			case limb.LEFTHAND:
+				position = GameObject.Find ("leftHand").transform.position;
+				break;
+			case limb.RIGHTHAND:
+				position = GameObject.Find ("rightHand").transform.position;
+				break;
+		};
+
+		return position;
 	}
 }
 
@@ -276,16 +388,16 @@ public class GrabObject : MonoBehaviour {
 	public static KeyCode pointDown = KeyCode.LeftShift;
 	public static KeyCode pointUp = KeyCode.Space;
 
-	private static KeyCode[] pointingKeysArray = new KeyCode[]{pointForward, pointLeft, pointBack, pointRight, pointDown, pointUp};
+	//private static KeyCode[] pointingKeysArray = new KeyCode[]{pointForward, pointLeft, pointBack, pointRight, pointDown, pointUp};
 
-	public static Dictionary<KeyCode, List<KeyCode>> possibleCombinations = new Dictionary<KeyCode, List<KeyCode>>() {
-		{pointForward, new List<KeyCode>(){leftFoot, rightFoot, leftHand, rightHand}},
-		{pointBack, new List<KeyCode>(){leftFoot, rightFoot, leftHand, rightHand}},
-		{pointLeft, new List<KeyCode>(){leftFoot, rightFoot, leftHand, rightHand}},
-		{pointRight, new List<KeyCode>(){leftFoot, rightFoot, leftHand, rightHand}},
-		{pointDown, new List<KeyCode>(){leftHand, rightHand}},
-		{pointUp, new List<KeyCode>(){leftFoot, rightFoot}}
-	};
+//	public static Dictionary<KeyCode, List<KeyCode>> possibleCombinations = new Dictionary<KeyCode, List<KeyCode>>() {
+//		{pointForward, new List<KeyCode>(){leftFoot, rightFoot, leftHand, rightHand}},
+//		{pointBack, new List<KeyCode>(){leftFoot, rightFoot, leftHand, rightHand}},
+//		{pointLeft, new List<KeyCode>(){leftFoot, rightFoot, leftHand, rightHand}},
+//		{pointRight, new List<KeyCode>(){leftFoot, rightFoot, leftHand, rightHand}},
+//		{pointDown, new List<KeyCode>(){leftHand, rightHand}},
+//		{pointUp, new List<KeyCode>(){leftFoot, rightFoot}}
+//	};
 		
 	void Start () {
 		mainCamera = GameObject.FindWithTag ("FPSCamera");
@@ -430,32 +542,30 @@ public class GrabObject : MonoBehaviour {
 				return;
 			}
 
-			List<KeyCode> keysDown = new List<KeyCode> ();
-
-			//get which 'push' keys have just been pressed
-			foreach (KeyCode key in new KeyCode[]{KeyCode.Q, KeyCode.E, KeyCode.Z, KeyCode.C}) {
-				if (Input.GetKey (key)) {
-					keysDown.Add (key);
-				}
-			}
-
-			if (keysDown.Count == 0) {
+			if (!Input.GetKey (KeyCode.Q)
+				&& !Input.GetKey (KeyCode.E)
+				&& !Input.GetKey (KeyCode.Z)
+				&& !Input.GetKey (KeyCode.C)) {
 				return;
 			}
+
+			//List<KeyCode> keysDown = new List<KeyCode> ();
+
+			//get which 'push' keys have just been pressed
+//			foreach (KeyCode key in new KeyCode[]{KeyCode.Q, KeyCode.E, KeyCode.Z, KeyCode.C}) {
+//				if (Input.GetKey (key)) {
+//					keysDown.Add (key);
+//				}
+//			}
 
 			List<jumpableObject> jObjectsNearPlayer = getAllJumpableObjectsNearPlayer ();
 
 			foreach (KeyCode key in new KeyCode[]{KeyCode.W, KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.LeftShift, KeyCode.Space}) {
 				if (Input.GetKey (key)) {
-					List<KeyCombination> combinations = KeyCombination.possibleCombinations [key];
-					foreach (KeyCombination combination in combinations) {
-						if (combination.keysDown.Except (keysDown).Count () == 0) {
-							//this combination is the one we go with
-							foreach (Movement movement in combination.movements) {
-								//TODO: check if the right in jumpable object exists
-								movement.applyForceToPlayer (GameObject.FindWithTag ("Player"), jObjectsNearPlayer);
-							}
-							break;
+					foreach (KeyCode keyDown in new KeyCode[]{KeyCode.Q, KeyCode.E, KeyCode.Z, KeyCode.C}) {
+						if (Input.GetKey (keyDown)) {
+							Movement movement = Movement.movements [key] [keyDown];
+							movement.applyForceToPlayer (GameObject.FindWithTag ("Player"), jObjectsNearPlayer);
 						}
 					}
 				}
