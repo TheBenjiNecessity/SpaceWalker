@@ -28,7 +28,7 @@ ehthumbs.db
 *.log
 obj/
 bin/
-/Library/*
+Library/
 Temp/
 *.pidb
 *.userprefs
