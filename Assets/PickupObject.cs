@@ -7,14 +7,18 @@ public class PickupObject : MonoBehaviour {
 	GameObject mainCamera;
 	bool carrying;
 	GameObject carriedObject;
-	GameObject grabber;
 
 	Quaternion rotationOffset;
 
 	public float distance;
 	public float smooth;
 	public float shootForce;
+	public float scrollSensitivity = 0.1f;
+
 	public float maxPickupDistance;
+	private float minCarryDistance = 0.85f;
+
+	private float currentDistance = 0;
 
 	Vector3 previousPosition;
 
@@ -22,7 +26,6 @@ public class PickupObject : MonoBehaviour {
 	void Start () {
 		previousPosition = Vector3.zero;
 		mainCamera = GameObject.FindWithTag ("FPSCamera");
-		grabber = GameObject.FindWithTag ("grabber");
 	}
 	
 	// Update is called once per frame
@@ -40,11 +43,29 @@ public class PickupObject : MonoBehaviour {
 	}
 
 	void carry(GameObject go) {
-		go.transform.position = Vector3.Lerp(go.transform.position, 
-			grabber.transform.position, 
-			Time.deltaTime * smooth);
+		int x = Screen.width / 2;
+		int y = Screen.height / 2;
+		Camera camera = mainCamera.GetComponent<Camera> ();
+		Ray ray = camera.ScreenPointToRay (new Vector3 (x, y));
+		Vector3 direction = ray.direction;
 
-		go.transform.rotation = Quaternion.Lerp (go.transform.rotation, grabber.transform.rotation * rotationOffset, Time.deltaTime * smooth);
+		float scroll = Input.GetAxis ("Mouse ScrollWheel");
+		if (scroll > 0) {
+			currentDistance -= scrollSensitivity;
+		} else if (scroll < 0) {
+			currentDistance += scrollSensitivity;
+		}
+
+		if (currentDistance >= maxPickupDistance || currentDistance <= minCarryDistance) {
+			if (scroll > 0) {
+				currentDistance += scrollSensitivity;
+			} else if (scroll < 0) {
+				currentDistance -= scrollSensitivity;
+			}
+		}
+			
+		go.transform.position = Vector3.Lerp(go.transform.position, mainCamera.transform.position + direction.normalized * currentDistance, Time.deltaTime * smooth);
+		go.transform.rotation = Quaternion.Lerp (go.transform.rotation, mainCamera.transform.rotation * rotationOffset, Time.deltaTime * smooth);
 
 		Rigidbody rigidBody = go.GetComponent<Rigidbody> ();
 
@@ -62,12 +83,13 @@ public class PickupObject : MonoBehaviour {
 			RaycastHit hit;
 			if (Physics.Raycast (ray, out hit)) {
 				Pickupable p = hit.collider.GetComponent<Pickupable> ();
-				if (p != null && Vector3.Distance(p.gameObject.transform.position, mainCamera.transform.position) <= maxPickupDistance) {
+				float distance = Vector3.Distance (p.gameObject.transform.position, mainCamera.transform.position);
+				if (p != null && distance <= maxPickupDistance && distance >= minCarryDistance) {
 					carrying = true;
 					carriedObject = p.gameObject;
 
-					rotationOffset = carriedObject.transform.rotation * Quaternion.Inverse (grabber.transform.rotation);
-
+					currentDistance = Vector3.Distance(p.gameObject.transform.position, mainCamera.transform.position);
+					rotationOffset = carriedObject.transform.rotation * Quaternion.Inverse (mainCamera.transform.rotation);
 				}
 			}
 		}
@@ -78,19 +100,33 @@ public class PickupObject : MonoBehaviour {
 		if (Input.GetMouseButtonUp ((int)MouseButtons.RIGHT)) {
 			rigidBody.AddForce (mainCamera.transform.forward * shootForce);
 		} else if (Input.GetMouseButtonUp ((int)MouseButtons.LEFT)) {
-			//rigidBody.velocity = velocity;
-
-			var positionOfCarriedObject = mainCamera.transform.position + mainCamera.transform.forward * distance;
-			Vector3 heading = positionOfCarriedObject - previousPosition;
-			float distanceOfDisplacement = heading.magnitude;
-			Vector3 direction = heading / distanceOfDisplacement;
-			float velocity = distanceOfDisplacement / Time.deltaTime;
-
-			Vector3 scaledDirection = Vector3.Scale(direction, new Vector3(velocity, velocity, velocity));
-
-			rigidBody.velocity = scaledDirection;
+			letGo ();
 		}
+	}
 
+	void throwObject () {
+		Rigidbody rigidBody = carriedObject.GetComponent<Rigidbody> ();
+		rigidBody.AddForce (mainCamera.transform.forward * shootForce);
+
+		release ();
+	}
+
+	void letGo () {
+		Rigidbody rigidBody = carriedObject.GetComponent<Rigidbody> ();
+		var positionOfCarriedObject = mainCamera.transform.position + mainCamera.transform.forward * distance;
+		Vector3 heading = positionOfCarriedObject - previousPosition;
+		float distanceOfDisplacement = heading.magnitude;
+		Vector3 direction = heading / distanceOfDisplacement;
+		float velocity = distanceOfDisplacement / Time.deltaTime;
+
+		Vector3 scaledDirection = Vector3.Scale(direction, new Vector3(velocity, velocity, velocity));
+
+		rigidBody.velocity = scaledDirection;
+
+		release ();
+	}
+
+	void release () {
 		if (Input.GetMouseButtonUp ((int)MouseButtons.LEFT)
 			|| Input.GetMouseButtonDown ((int)MouseButtons.RIGHT)) {
 			carrying = false;

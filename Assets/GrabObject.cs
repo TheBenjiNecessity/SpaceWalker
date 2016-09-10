@@ -220,6 +220,10 @@ public class GrabObject : MonoBehaviour {
 		GameObject player = GameObject.FindWithTag ("Player");//Will grabbing this every time be slow?
 		return player.transform;
 	}
+
+	public GameObject getGrabbedObject () {
+		return grabbedObject;
+	}
 	#endregion
 
 	private void movePlayer(Dictionary<KeyCode, List<KeyCode>> combinations) {

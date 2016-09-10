@@ -4,16 +4,22 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class MyMouseLook : MonoBehaviour
 {
+	private enum TurnType {LEFT, RIGHT, NONE};
+
 	public float XSensitivity = 2f;
 	public float YSensitivity = 2f;
-	public bool smooth;
-	public float smoothTime = 0.5f;
+	public bool smooth = false;
+	public float smoothTime = 10f;
 	public float rollSpeed = 3f;
 	public bool clampVerticalRotation = true;
+	public bool clampHorizontalRotation = true;
 	public float MinimumX = -90F;
 	public float MaximumX = 90F;
 	public float MinimumY = -60F;
 	public float MaximumY = 60F;
+
+	public bool allowBodyRotationWithHead = false;
+	private bool shouldRotateBodyWithHead = false;
 
 	private Quaternion m_CharacterTargetRot;
 	private Quaternion m_CameraTargetRot;
@@ -24,7 +30,7 @@ public class MyMouseLook : MonoBehaviour
 		m_CameraTargetRot = camera.localRotation;
 	}
 
-	public void HandleRotation(Transform character, Transform camera)
+	public void HandleRotation(Transform head, Transform camera, Transform body)
 	{
 		float xRot = CrossPlatformInputManager.GetAxis("Mouse X") * XSensitivity;
 		float yRot = CrossPlatformInputManager.GetAxis("Mouse Y") * YSensitivity;
@@ -35,22 +41,29 @@ public class MyMouseLook : MonoBehaviour
 		if(clampVerticalRotation)
 			m_CameraTargetRot = ClampRotationAroundXAxis (m_CameraTargetRot);
 
-		m_CharacterTargetRot = ClampRotationAroundYAxis (m_CharacterTargetRot);
+		if(clampHorizontalRotation)
+			m_CharacterTargetRot = ClampRotationAroundYAxis (m_CharacterTargetRot);
 
 		if(smooth)
 		{
-			character.localRotation = Quaternion.Slerp (character.localRotation, m_CharacterTargetRot,
+			head.localRotation = Quaternion.Slerp (head.localRotation, m_CharacterTargetRot,
 				smoothTime * Time.deltaTime);
 			camera.localRotation = Quaternion.Slerp (camera.localRotation, m_CameraTargetRot,
 				smoothTime * Time.deltaTime);
+
+			if (allowBodyRotationWithHead && shouldRotateBodyWithHead) {
+				body.localRotation = Quaternion.Slerp (body.localRotation, Quaternion.Euler (0f, xRot, 0f), smoothTime * Time.deltaTime);
+			}
 		}
 		else
 		{
-			character.localRotation = m_CharacterTargetRot;
+			head.localRotation = m_CharacterTargetRot;
 			camera.localRotation = m_CameraTargetRot;
-		}
 
-		//RotateBody (character);
+			if (allowBodyRotationWithHead && shouldRotateBodyWithHead) {
+				body.localRotation *= Quaternion.Euler (0f, xRot, 0f);
+			}
+		}
 	}
 
 	Quaternion ClampRotationAroundXAxis(Quaternion q)
@@ -82,64 +95,8 @@ public class MyMouseLook : MonoBehaviour
 
 		q.y = Mathf.Tan (0.5f * Mathf.Deg2Rad * angleY);
 
+		shouldRotateBodyWithHead = angleY == MinimumY || angleY == MaximumY;
+								
 		return q;
 	}
-
-//	private void RotateBody(Transform character)
-//	{
-//		if (Input.GetKey (KeyCode.A)) {
-//			RollLeft (character);
-//		} else if (Input.GetKey (KeyCode.D)) {
-//			RollRight (character);
-//		}
-//
-//		if (Input.GetKey (KeyCode.W)) {
-//			PitchForward (character);
-//		} else if (Input.GetKey (KeyCode.S)) {
-//			PitchBack (character);
-//		}
-//	}
-
-//	public void RollLeft(Transform character) {
-//		Roll (rollSpeed, character);
-//	}
-//
-//	public void RollRight(Transform character) {
-//		Roll (-rollSpeed, character);
-//	}
-//
-//	public void PitchForward(Transform character) {
-//		Pitch (rollSpeed, character);
-//	}
-//
-//	public void PitchBack(Transform character) {
-//		Pitch (-rollSpeed, character);
-//	}
-
-//	private void Roll(float roll, Transform character) {
-//		m_CharacterTargetRot *= Quaternion.Euler (0f, 0f, roll);
-//		if(smooth)
-//		{
-//			character.localRotation = Quaternion.Slerp (character.localRotation, m_CharacterTargetRot,
-//				smoothTime * Time.deltaTime);
-//		}
-//		else
-//		{
-//			character.localRotation = m_CharacterTargetRot;
-//		}
-//	}
-//
-//	private void Pitch(float pitch, Transform character) {
-//		m_CharacterTargetRot *= Quaternion.Euler (pitch, 0f, 0f);
-//		if(smooth)
-//		{
-//			character.localRotation = Quaternion.Slerp (character.localRotation, m_CharacterTargetRot,
-//				smoothTime * Time.deltaTime);
-//		}
-//		else
-//		{
-//			character.localRotation = m_CharacterTargetRot;
-//		}
-//	}
 }
-

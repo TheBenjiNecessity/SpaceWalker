@@ -10,6 +10,7 @@ public class MyFPSBehaviour : MonoBehaviour {
 	private float m_XRotation;
 	private Vector2 m_Input;
 	private CollisionFlags m_CollisionFlags;
+	private GameObject m_player;
 
 	private MyMouseLook m_MouseLook;
 
@@ -17,12 +18,16 @@ public class MyFPSBehaviour : MonoBehaviour {
 	void Start () {
 		m_Camera = GameObject.FindWithTag ("FPSCamera").GetComponent<Camera> ();
 		m_Head = GameObject.FindWithTag ("Head");
+		m_player = GameObject.FindWithTag ("Player");
 		m_MouseLook = new MyMouseLook ();
 		m_MouseLook.Init(m_Head.transform, m_Camera.transform);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		m_MouseLook.HandleRotation (m_Head.transform, m_Camera.transform);
+		GrabObject grabObject = m_player.GetComponent<GrabObject> ();
+		GameObject grabbedObject = grabObject.getGrabbedObject ();
+		m_MouseLook.allowBodyRotationWithHead = grabbedObject != null;
+		m_MouseLook.HandleRotation (m_Head.transform, m_Camera.transform, m_player.transform);
 	}
 }
