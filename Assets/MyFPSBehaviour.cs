@@ -28,6 +28,9 @@ public class MyFPSBehaviour : MonoBehaviour {
 		GrabObject grabObject = m_player.GetComponent<GrabObject> ();
 		GameObject grabbedObject = grabObject.getGrabbedObject ();
 		m_MouseLook.allowBodyRotationWithHead = grabbedObject != null;
-		m_MouseLook.HandleRotation (m_Head.transform, m_Camera.transform, m_player.transform);
+
+		if (!Input.GetKey (KeyCode.R)) {
+			m_MouseLook.HandleRotation (m_Head.transform, m_Camera.transform, m_player.transform);
+		}
 	}
 }

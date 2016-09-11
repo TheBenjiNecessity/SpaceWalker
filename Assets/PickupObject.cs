@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class PickupObject : MonoBehaviour {
 	enum MouseButtons {LEFT = 0, RIGHT = 1, MIDDLE = 2};
@@ -13,12 +14,17 @@ public class PickupObject : MonoBehaviour {
 	public float distance;
 	public float smooth;
 	public float shootForce;
+	public float rotationSmoothing = 5f;
 	public float scrollSensitivity = 0.1f;
+	public float XSensitivity = 2f;
+	public float YSensitivity = 2f;
 
 	public float maxPickupDistance;
 	private float minCarryDistance = 0.85f;
 
 	private float currentDistance = 0;
+
+	private Quaternion objectRot;
 
 	Vector3 previousPosition;
 
@@ -31,7 +37,7 @@ public class PickupObject : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (carrying) {
-			carry (carriedObject);
+			carry ();
 			drop ();
 		} else {
 			pickup ();
@@ -42,35 +48,49 @@ public class PickupObject : MonoBehaviour {
 		}
 	}
 
-	void carry(GameObject go) {
-		int x = Screen.width / 2;
-		int y = Screen.height / 2;
-		Camera camera = mainCamera.GetComponent<Camera> ();
-		Ray ray = camera.ScreenPointToRay (new Vector3 (x, y));
-		Vector3 direction = ray.direction;
+	void carry() {
+		if (Input.GetKey (KeyCode.R)) {
+			//rotate the object around based on mouse movement
+			float xRot = CrossPlatformInputManager.GetAxis ("Mouse X") * XSensitivity;
+			float yRot = CrossPlatformInputManager.GetAxis ("Mouse Y") * YSensitivity;
 
-		float scroll = Input.GetAxis ("Mouse ScrollWheel");
-		if (scroll > 0) {
-			currentDistance -= scrollSensitivity;
-		} else if (scroll < 0) {
-			currentDistance += scrollSensitivity;
-		}
+			objectRot *= Quaternion.Euler (yRot, -xRot, 0f);
 
-		if (currentDistance >= maxPickupDistance || currentDistance <= minCarryDistance) {
+			rotationOffset = objectRot;
+			carriedObject.transform.rotation = Quaternion.Slerp (carriedObject.transform.rotation, objectRot,
+				rotationSmoothing * Time.deltaTime);
+		} else {
+			//move the object around based on where the player is looking
+			int x = Screen.width / 2;
+			int y = Screen.height / 2;
+			Camera camera = mainCamera.GetComponent<Camera> ();
+			Ray ray = camera.ScreenPointToRay (new Vector3 (x, y));
+			Vector3 direction = ray.direction;
+
+			//handle how far the object is by scrolling
+			float scroll = Input.GetAxis ("Mouse ScrollWheel");
 			if (scroll > 0) {
-				currentDistance += scrollSensitivity;
-			} else if (scroll < 0) {
 				currentDistance -= scrollSensitivity;
+			} else if (scroll < 0) {
+				currentDistance += scrollSensitivity;
 			}
+
+			if (currentDistance >= maxPickupDistance || currentDistance <= minCarryDistance) {
+				if (scroll > 0) {
+					currentDistance += scrollSensitivity;
+				} else if (scroll < 0) {
+					currentDistance -= scrollSensitivity;
+				}
+			}
+
+			carriedObject.transform.position = Vector3.Lerp(carriedObject.transform.position, mainCamera.transform.position + direction.normalized * currentDistance, Time.deltaTime * smooth);
+			carriedObject.transform.rotation = Quaternion.Lerp (carriedObject.transform.rotation, mainCamera.transform.rotation * rotationOffset, Time.deltaTime * smooth);
+
+			Rigidbody rigidBody = carriedObject.GetComponent<Rigidbody> ();
+
+			rigidBody.velocity = Vector3.zero;
+			rigidBody.angularVelocity = Vector3.zero;
 		}
-			
-		go.transform.position = Vector3.Lerp(go.transform.position, mainCamera.transform.position + direction.normalized * currentDistance, Time.deltaTime * smooth);
-		go.transform.rotation = Quaternion.Lerp (go.transform.rotation, mainCamera.transform.rotation * rotationOffset, Time.deltaTime * smooth);
-
-		Rigidbody rigidBody = go.GetComponent<Rigidbody> ();
-
-		rigidBody.velocity = Vector3.zero;
-		rigidBody.angularVelocity = Vector3.zero;
 	}
 
 	void pickup() {
@@ -88,6 +108,7 @@ public class PickupObject : MonoBehaviour {
 					carrying = true;
 					carriedObject = p.gameObject;
 
+					objectRot = carriedObject.transform.localRotation;
 					currentDistance = Vector3.Distance(p.gameObject.transform.position, mainCamera.transform.position);
 					rotationOffset = carriedObject.transform.rotation * Quaternion.Inverse (mainCamera.transform.rotation);
 				}
@@ -96,7 +117,6 @@ public class PickupObject : MonoBehaviour {
 	}
 
 	void drop() {
-		Rigidbody rigidBody = carriedObject.GetComponent<Rigidbody> ();
 		if (Input.GetMouseButtonDown ((int)MouseButtons.RIGHT)) {
 			throwObject ();
 		} else if (Input.GetMouseButtonUp ((int)MouseButtons.LEFT)) {
