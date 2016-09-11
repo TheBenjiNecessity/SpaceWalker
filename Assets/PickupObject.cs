@@ -83,8 +83,8 @@ public class PickupObject : MonoBehaviour {
 			RaycastHit hit;
 			if (Physics.Raycast (ray, out hit)) {
 				Pickupable p = hit.collider.GetComponent<Pickupable> ();
-				float distance = Vector3.Distance (p.gameObject.transform.position, mainCamera.transform.position);
-				if (p != null && distance <= maxPickupDistance && distance >= minCarryDistance) {
+				float localDistance = Vector3.Distance (p.gameObject.transform.position, mainCamera.transform.position);
+				if (p != null && localDistance <= maxPickupDistance && localDistance >= minCarryDistance) {
 					carrying = true;
 					carriedObject = p.gameObject;
 
@@ -97,8 +97,8 @@ public class PickupObject : MonoBehaviour {
 
 	void drop() {
 		Rigidbody rigidBody = carriedObject.GetComponent<Rigidbody> ();
-		if (Input.GetMouseButtonUp ((int)MouseButtons.RIGHT)) {
-			rigidBody.AddForce (mainCamera.transform.forward * shootForce);
+		if (Input.GetMouseButtonDown ((int)MouseButtons.RIGHT)) {
+			throwObject ();
 		} else if (Input.GetMouseButtonUp ((int)MouseButtons.LEFT)) {
 			letGo ();
 		}
@@ -106,6 +106,8 @@ public class PickupObject : MonoBehaviour {
 
 	void throwObject () {
 		Rigidbody rigidBody = carriedObject.GetComponent<Rigidbody> ();
+		rigidBody.isKinematic = false;
+		carriedObject.transform.parent = null;
 		rigidBody.AddForce (mainCamera.transform.forward * shootForce);
 
 		release ();

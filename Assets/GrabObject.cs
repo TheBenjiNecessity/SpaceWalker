@@ -226,15 +226,6 @@ public class GrabObject : MonoBehaviour {
 	}
 	#endregion
 
-	private void movePlayer(Dictionary<KeyCode, List<KeyCode>> combinations) {
-		foreach (KeyValuePair<KeyCode, List<KeyCode>> combination in combinations) {
-			KeyCode key = combination.Key;
-			List<KeyCode> keysDown = combination.Value;
-
-
-		}
-	}
-
 	//called in update if player is in state of grabbing
 	//continue grabbing the grabable object
 	void continueToGrab () {
