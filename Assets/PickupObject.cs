@@ -54,11 +54,8 @@ public class PickupObject : MonoBehaviour {
 			float xRot = CrossPlatformInputManager.GetAxis ("Mouse X") * XSensitivity;
 			float yRot = CrossPlatformInputManager.GetAxis ("Mouse Y") * YSensitivity;
 
-			objectRot *= Quaternion.Euler (yRot, -xRot, 0f);
-
-			rotationOffset = objectRot;
-			carriedObject.transform.rotation = Quaternion.Slerp (carriedObject.transform.rotation, objectRot,
-				rotationSmoothing * Time.deltaTime);
+			carriedObject.transform.RotateAround (carriedObject.transform.position, mainCamera.transform.up, -xRot);
+			carriedObject.transform.RotateAround (carriedObject.transform.position, mainCamera.transform.right, yRot);
 		} else {
 			//move the object around based on where the player is looking
 			int x = Screen.width / 2;
