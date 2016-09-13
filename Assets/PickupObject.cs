@@ -48,6 +48,9 @@ public class PickupObject : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// A method called every frame that handles carrying in an on going way.
+	/// </summary>
 	void carry() {
 		if (Input.GetKey (KeyCode.R)) {
 			//rotate the object around based on mouse movement
@@ -56,6 +59,7 @@ public class PickupObject : MonoBehaviour {
 
 			carriedObject.transform.RotateAround (carriedObject.transform.position, mainCamera.transform.up, -xRot);
 			carriedObject.transform.RotateAround (carriedObject.transform.position, mainCamera.transform.right, yRot);
+			//TODO: for bonus points, let the player let go of the object while rotating and have it still rotate.
 		} else {
 			//move the object around based on where the player is looking
 			int x = Screen.width / 2;
@@ -90,6 +94,10 @@ public class PickupObject : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Pickup an object. Find the first object along a ray cast 
+	/// from the camera and parent it to the player to simulate carrying.
+	/// </summary>
 	void pickup() {
 		if (Input.GetMouseButtonDown (0)) {
 			int x = Screen.width / 2;
@@ -113,6 +121,10 @@ public class PickupObject : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Attempt to drop the object. If the right mouse button is pressed then throw the object.
+	/// If the left mouse button is released, let go of the object.
+	/// </summary>
 	void drop() {
 		if (Input.GetMouseButtonDown ((int)MouseButtons.RIGHT)) {
 			throwObject ();
@@ -121,6 +133,9 @@ public class PickupObject : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Throws the object.
+	/// </summary>
 	void throwObject () {
 		Rigidbody rigidBody = carriedObject.GetComponent<Rigidbody> ();
 		rigidBody.isKinematic = false;
@@ -130,6 +145,9 @@ public class PickupObject : MonoBehaviour {
 		release ();
 	}
 
+	/// <summary>
+	/// Lets the object go.
+	/// </summary>
 	void letGo () {
 		Rigidbody rigidBody = carriedObject.GetComponent<Rigidbody> ();
 		var positionOfCarriedObject = mainCamera.transform.position + mainCamera.transform.forward * distance;
@@ -145,6 +163,9 @@ public class PickupObject : MonoBehaviour {
 		release ();
 	}
 
+	/// <summary>
+	/// Unparent the object and set the instance to null.
+	/// </summary>
 	void release () {
 		if (Input.GetMouseButtonUp ((int)MouseButtons.LEFT)
 			|| Input.GetMouseButtonDown ((int)MouseButtons.RIGHT)) {
