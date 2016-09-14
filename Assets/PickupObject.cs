@@ -108,14 +108,16 @@ public class PickupObject : MonoBehaviour {
 			RaycastHit hit;
 			if (Physics.Raycast (ray, out hit)) {
 				Pickupable p = hit.collider.GetComponent<Pickupable> ();
-				float localDistance = Vector3.Distance (p.gameObject.transform.position, mainCamera.transform.position);
-				if (p != null && localDistance <= maxPickupDistance && localDistance >= minCarryDistance) {
-					carrying = true;
-					carriedObject = p.gameObject;
+				if (p != null) {
+					float localDistance = Vector3.Distance (p.gameObject.transform.position, mainCamera.transform.position);
+					if (localDistance <= maxPickupDistance && localDistance >= minCarryDistance) {
+						carrying = true;
+						carriedObject = p.gameObject;
 
-					objectRot = carriedObject.transform.localRotation;
-					currentDistance = Vector3.Distance(p.gameObject.transform.position, mainCamera.transform.position);
-					rotationOffset = carriedObject.transform.rotation * Quaternion.Inverse (mainCamera.transform.rotation);
+						objectRot = carriedObject.transform.localRotation;
+						currentDistance = Vector3.Distance (p.gameObject.transform.position, mainCamera.transform.position);
+						rotationOffset = carriedObject.transform.rotation * Quaternion.Inverse (mainCamera.transform.rotation);
+					}
 				}
 			}
 		}

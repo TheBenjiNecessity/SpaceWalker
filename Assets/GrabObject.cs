@@ -181,6 +181,8 @@ public class GrabObject : MonoBehaviour {
 
 	GameObject mainCamera;
 	GameObject grabbedObject;
+	GameObject player;
+
 	public float maxGrabDistance;
 	public float smooth;
 	public float jumpForce = 250f;
@@ -188,9 +190,16 @@ public class GrabObject : MonoBehaviour {
 	public float vectorAngleTolerance = 10.0f;
 	public float torque;
 	public float force;
-			
+
+	public bool shouldSmooth;
+
+	public float playerRotationSmooth = 10f;
+
+	private Quaternion playerRot;
+
 	void Start () {
 		mainCamera = GameObject.FindWithTag ("FPSCamera");
+		player = GameObject.FindWithTag ("Player");
 	}
 		
 	void Update () {
@@ -276,19 +285,14 @@ public class GrabObject : MonoBehaviour {
 
 	void tryToMove () {
 		if (grabbedObject == null) { //if the player is not grabbing something
-			if (!Input.GetKey (KeyCode.W)
-			    && !Input.GetKey (KeyCode.A)
-			    && !Input.GetKey (KeyCode.S)
-			    && !Input.GetKey (KeyCode.D)
-			    && !Input.GetKey (KeyCode.LeftShift)
-			    && !Input.GetKey (KeyCode.Space)) {
+			if (hasNotPressedMovementKeysExtended ()) {
 				return;
 			}
 
 			if (!Input.GetKey (KeyCode.Q)
-				&& !Input.GetKey (KeyCode.E)
-				&& !Input.GetKey (KeyCode.Z)
-				&& !Input.GetKey (KeyCode.C)) {
+			    && !Input.GetKey (KeyCode.E)
+			    && !Input.GetKey (KeyCode.Z)
+			    && !Input.GetKey (KeyCode.C)) {
 				return;
 			}
 
@@ -306,19 +310,37 @@ public class GrabObject : MonoBehaviour {
 			}
 		} else { //if the player is grabbing something
 			tryToJump ();
-		}
-	}
 
-	List<jumpableObject> getAllJumpableObjectsNearPlayer() {
-		List<jumpableObject> result = new List<jumpableObject> ();
-		Collider[] objects = Physics.OverlapSphere (transform.position, jumpableRadius);
-		foreach (Collider collider in objects) {
-			jumpableObject jumpable = collider.GetComponent<jumpableObject> ();
-			if (jumpable != null) {
-				result.Add (jumpable);
+			if (hasNotPressedMovementKeys()) {
+				return;
+			}
+				
+			float pitch = 0f;
+			float roll = 0f;
+
+			if (Input.GetKey (KeyCode.W)) {
+				pitch += 0.75f;
+			}
+
+			if (Input.GetKey (KeyCode.A)) {
+				roll += 0.75f;
+			}
+
+			if (Input.GetKey (KeyCode.S)) {
+				pitch += -0.75f;
+			}
+
+			if (Input.GetKey (KeyCode.D)) {
+				roll += -0.75f;
+			}
+
+			if (shouldSmooth) {
+				playerRot *= Quaternion.Euler (pitch, 0f, roll);
+				player.transform.localRotation = Quaternion.Slerp (player.transform.localRotation, playerRot, playerRotationSmooth * Time.deltaTime);
+			} else {
+				player.transform.localRotation *= Quaternion.Euler (pitch, 0f, roll);
 			}
 		}
-		return result;
 	}
 
 	void tryToJump () {
@@ -333,5 +355,26 @@ public class GrabObject : MonoBehaviour {
 
 	void stopGrabbing () {
 		grabbedObject = null;
+	}
+
+	List<jumpableObject> getAllJumpableObjectsNearPlayer() {
+		List<jumpableObject> result = new List<jumpableObject> ();
+		Collider[] objects = Physics.OverlapSphere (transform.position, jumpableRadius);
+		foreach (Collider collider in objects) {
+			jumpableObject jumpable = collider.GetComponent<jumpableObject> ();
+			if (jumpable != null) {
+				result.Add (jumpable);
+			}
+		}
+
+		return result;
+	}
+
+	public static bool hasNotPressedMovementKeys () {
+		return !Input.GetKey (KeyCode.W) && !Input.GetKey (KeyCode.A) && !Input.GetKey (KeyCode.S) && !Input.GetKey (KeyCode.D);
+	}
+
+	public static bool hasNotPressedMovementKeysExtended () {
+		return hasNotPressedMovementKeys () && !Input.GetKey (KeyCode.LeftShift) && !Input.GetKey (KeyCode.Space);
 	}
 }

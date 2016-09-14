@@ -2,10 +2,10 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/PickupObject.cs">
     <Files>
-      <File FileName="Assets/MyMouseLook.cs" Line="21" Column="48" />
-      <File FileName="Assets/GrabObject.cs" Line="180" Column="54" />
-      <File FileName="Assets/PickupObject.cs" Line="66" Column="3" />
-      <File FileName="Assets/MyFPSBehaviour.cs" Line="27" Column="36" />
+      <File FileName="Assets/MyMouseLook.cs" Line="39" Column="57" />
+      <File FileName="Assets/GrabObject.cs" Line="252" Column="30" />
+      <File FileName="Assets/PickupObject.cs" Line="29" Column="27" />
+      <File FileName="Assets/MyFPSBehaviour.cs" Line="30" Column="65" />
       <File FileName="Assets/jumpableObject.cs" Line="1" Column="1" />
       <File FileName="Assets/PlayerMovement.cs" Line="1" Column="1" />
     </Files>
