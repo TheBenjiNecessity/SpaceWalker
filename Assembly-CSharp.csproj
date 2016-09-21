@@ -49,12 +49,14 @@
      <Compile Include="Assets\GameBehaviour.cs" />
      <Compile Include="Assets\GrabObject.cs" />
      <Compile Include="Assets\Grabable.cs" />
+     <Compile Include="Assets\MoveHinge.cs" />
      <Compile Include="Assets\MyFPSBehaviour.cs" />
      <Compile Include="Assets\MyMouseLook.cs" />
      <Compile Include="Assets\PickupObject.cs" />
      <Compile Include="Assets\Pickupable.cs" />
      <Compile Include="Assets\PlayerBehaviour.cs" />
      <Compile Include="Assets\PlayerMovement.cs" />
+     <Compile Include="Assets\States.cs" />
      <Compile Include="Assets\jumpableObject.cs" />
      <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
      <None Include="Assets\Standard Assets\Characters\ThirdPersonCharacter\ThirdPersonCharacterGuidelines.txt" />

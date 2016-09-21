@@ -4,6 +4,7 @@ using UnityStandardAssets.Characters.FirstPerson;
 
 public class MyFPSBehaviour : MonoBehaviour {
 
+	private States state;
 	private Camera m_Camera;
 	private GameObject m_Head;
 	private float m_YRotation;
@@ -16,6 +17,7 @@ public class MyFPSBehaviour : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		state = States.Instance;
 		m_Camera = GameObject.FindWithTag ("FPSCamera").GetComponent<Camera> ();
 		m_Head = GameObject.FindWithTag ("Head");
 		m_player = GameObject.FindWithTag ("Player");
@@ -25,11 +27,9 @@ public class MyFPSBehaviour : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		GrabObject grabObject = m_player.GetComponent<GrabObject> ();
-		GameObject grabbedObject = grabObject.getGrabbedObject ();
-		m_MouseLook.allowBodyRotationWithHead = grabbedObject != null;
+		m_MouseLook.allowBodyRotationWithHead = state.grabbingObject;
 
-		if (!Input.GetKey (KeyCode.R)) {
+		if (!state.rotatingObject && !state.draggingDoor) {
 			m_MouseLook.HandleRotation (m_Head.transform, m_Camera.transform, m_player.transform);
 		}
 	}

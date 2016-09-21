@@ -5,6 +5,7 @@ using UnityStandardAssets.CrossPlatformInput;
 public class PickupObject : MonoBehaviour {
 	enum MouseButtons {LEFT = 0, RIGHT = 1, MIDDLE = 2};
 
+	States state;
 	GameObject mainCamera;
 	bool carrying;
 	GameObject carriedObject;
@@ -24,12 +25,13 @@ public class PickupObject : MonoBehaviour {
 
 	private float currentDistance = 0;
 
-	private Quaternion objectRot;
+	//private Quaternion objectRot;
 
 	Vector3 previousPosition;
 
 	// Use this for initialization
 	void Start () {
+		state = States.Instance;
 		previousPosition = Vector3.zero;
 		mainCamera = GameObject.FindWithTag ("FPSCamera");
 	}
@@ -57,10 +59,12 @@ public class PickupObject : MonoBehaviour {
 			float xRot = CrossPlatformInputManager.GetAxis ("Mouse X") * XSensitivity;
 			float yRot = CrossPlatformInputManager.GetAxis ("Mouse Y") * YSensitivity;
 
+			state.rotatingObject = true;
 			carriedObject.transform.RotateAround (carriedObject.transform.position, mainCamera.transform.up, -xRot);
 			carriedObject.transform.RotateAround (carriedObject.transform.position, mainCamera.transform.right, yRot);
 			//TODO: for bonus points, let the player let go of the object while rotating and have it still rotate.
 		} else {
+			state.rotatingObject = false;
 			//move the object around based on where the player is looking
 			int x = Screen.width / 2;
 			int y = Screen.height / 2;
@@ -114,7 +118,7 @@ public class PickupObject : MonoBehaviour {
 						carrying = true;
 						carriedObject = p.gameObject;
 
-						objectRot = carriedObject.transform.localRotation;
+						//objectRot = carriedObject.transform.localRotation;
 						currentDistance = Vector3.Distance (p.gameObject.transform.position, mainCamera.transform.position);
 						rotationOffset = carriedObject.transform.rotation * Quaternion.Inverse (mainCamera.transform.rotation);
 					}

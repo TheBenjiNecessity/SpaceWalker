@@ -178,6 +178,7 @@ public class Movement {
 public class GrabObject : MonoBehaviour {
 
 	enum MouseButtons {LEFT = 0, RIGHT = 1, MIDDLE = 2};
+	private States state;
 
 	GameObject mainCamera;
 	GameObject grabbedObject;
@@ -198,6 +199,7 @@ public class GrabObject : MonoBehaviour {
 	private Quaternion playerRot;
 
 	void Start () {
+		state = States.Instance;
 		mainCamera = GameObject.FindWithTag ("FPSCamera");
 		player = GameObject.FindWithTag ("Player");
 	}
@@ -267,7 +269,7 @@ public class GrabObject : MonoBehaviour {
 				Grabable g = hit.collider.GetComponent<Grabable> ();
 				if (g != null && Vector3.Distance(g.gameObject.transform.position, mainCamera.transform.position) <= maxGrabDistance) {
 					grabbedObject = g.gameObject;
-
+					state.grabbingObject = true;
 					Rigidbody thisr = this.GetComponent<Rigidbody> ();
 					thisr.isKinematic = true;
 					thisr.velocity = Vector3.zero;
@@ -295,6 +297,8 @@ public class GrabObject : MonoBehaviour {
 			    && !Input.GetKey (KeyCode.C)) {
 				return;
 			}
+
+			//TODO: this movement should be just like: w adds force to pitch forward.
 
 			List<jumpableObject> jObjectsNearPlayer = getAllJumpableObjectsNearPlayer ();
 
@@ -355,6 +359,7 @@ public class GrabObject : MonoBehaviour {
 
 	void stopGrabbing () {
 		grabbedObject = null;
+		state.grabbingObject = false;
 	}
 
 	List<jumpableObject> getAllJumpableObjectsNearPlayer() {
