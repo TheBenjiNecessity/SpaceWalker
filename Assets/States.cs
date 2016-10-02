@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class States
 {
@@ -26,6 +27,14 @@ public class States
 			}
 			return instance;
 		}
+	}
+
+	public static float getMouseXAxis () {
+		return CrossPlatformInputManager.GetAxis ("Mouse X");
+	}
+
+	public static float getMouseYAxis () {
+		return CrossPlatformInputManager.GetAxis ("Mouse Y");
 	}
 }
 

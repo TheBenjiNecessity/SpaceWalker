@@ -11,7 +11,12 @@ public class PlayerBehaviour : MonoBehaviour {
 		position = new Rect((Screen.width - 2) / 2, (Screen.height - 
 			2) /2, 2, 2);
 
-		Cursor.visible = false;
+		lockCursor ();
+	}
+
+	void Update()
+	{
+		lockCursor ();
 	}
 
 	void OnGUI()
@@ -20,6 +25,11 @@ public class PlayerBehaviour : MonoBehaviour {
 		{
 			GUI.DrawTexture(position, crosshairTexture);
 		}
+	}
+
+	void lockCursor () {
+		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
 	}
 }
 

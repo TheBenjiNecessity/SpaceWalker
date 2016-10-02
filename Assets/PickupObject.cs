@@ -54,10 +54,10 @@ public class PickupObject : MonoBehaviour {
 	/// A method called every frame that handles carrying in an on going way.
 	/// </summary>
 	void carry() {
-		if (Input.GetKey (KeyCode.R)) {
+		if (Input.GetKey (KeyCode.R) && carriedObject != null) {
 			//rotate the object around based on mouse movement
-			float xRot = CrossPlatformInputManager.GetAxis ("Mouse X") * XSensitivity;
-			float yRot = CrossPlatformInputManager.GetAxis ("Mouse Y") * YSensitivity;
+			float xRot = States.getMouseXAxis () * XSensitivity;
+			float yRot = States.getMouseYAxis () * YSensitivity;
 
 			state.rotatingObject = true;
 			carriedObject.transform.RotateAround (carriedObject.transform.position, mainCamera.transform.up, -xRot);

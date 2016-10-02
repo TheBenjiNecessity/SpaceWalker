@@ -32,8 +32,8 @@ public class MyMouseLook : MonoBehaviour
 
 	public void HandleRotation(Transform head, Transform camera, Transform body)
 	{
-		float xRot = CrossPlatformInputManager.GetAxis("Mouse X") * XSensitivity;
-		float yRot = CrossPlatformInputManager.GetAxis("Mouse Y") * YSensitivity;
+		float xRot = States.getMouseXAxis () * XSensitivity;
+		float yRot = States.getMouseYAxis () * YSensitivity;
 
 		m_CharacterTargetRot *= Quaternion.Euler (0f, xRot, 0f);
 		m_CameraTargetRot *= Quaternion.Euler (-yRot, 0f, 0f);
